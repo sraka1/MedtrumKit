@@ -76,11 +76,11 @@ class MedtrumKitUICoordinator: UINavigationController, PumpManagerOnboarding, Co
             return .welcomeScreen
         }
         
-        if pumpManager.state.sessionToken.isEmpty || pumpManager.state.pumpSN.isEmpty {
+        if pumpManager.state.sessionToken.isEmpty || pumpManager.state.pumpSN.isEmpty || pumpManager.state.pumpState.rawValue < PatchState.primed.rawValue {
             return .pumpBaseSettingsScreen
         }
         
-        if pumpManager.state.patchId.isEmpty {
+        if pumpManager.state.patchId.isEmpty || pumpManager.state.pumpState.rawValue < PatchState.active.rawValue {
             return .patchActivationScreen
         }
         

@@ -98,7 +98,7 @@ public class MedtrumPumpManager: DeviceManager {
     }
     
     public var debugDescription: String {
-        ""
+        state.debugDescription
     }
     
     public func acknowledgeAlert(alertIdentifier _: LoopKit.Alert.AlertIdentifier, completion: @escaping ((any Error)?) -> Void) {
@@ -667,7 +667,8 @@ public extension MedtrumPumpManager {
         self.log.info("Start priming patch pump")
         
         if self.state.patchId.isEmpty {
-            self.log.info("NOTE: Update session token...")
+            self.log.debug("NOTE: Update session token...")
+            self.state.previousSessionToken = self.state.sessionToken
             self.state.sessionToken = Crypto.genSessionToken()
             self.notifyStateDidChange()
         }
