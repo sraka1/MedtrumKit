@@ -98,7 +98,7 @@ public class MedtrumPumpManager: DeviceManager {
     }
     
     public var debugDescription: String {
-        ""
+        state.debugDescription
     }
     
     public func acknowledgeAlert(alertIdentifier _: LoopKit.Alert.AlertIdentifier, completion: @escaping ((any Error)?) -> Void) {
@@ -664,13 +664,9 @@ public extension MedtrumPumpManager {
             return
         }
         
-        self.log.info("Start priming patch pump")
-        
-        if self.state.patchId.isEmpty {
-            self.log.info("NOTE: Update session token...")
-            self.state.sessionToken = Crypto.genSessionToken()
-            self.notifyStateDidChange()
-        }
+        //2466528379 -> 7b3c0493
+        self.state.sessionToken = Data([0x7b, 0x3c, 0x04, 0x93]) //Crypto.genSessionToken()
+        self.notifyStateDidChange()
         
         self.bluetooth.ensureConnected(autoDisconnect: false) { connectionResult in
             if case .failure(let error) = connectionResult {

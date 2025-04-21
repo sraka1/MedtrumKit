@@ -28,6 +28,7 @@ public class MedtrumPumpState: RawRepresentable {
         pumpSN = rawValue["pumpSN"] as? Data ?? Data()
         usingContinuousMode = rawValue["usingContinuousMode"] as? Bool ?? false
         sessionToken = rawValue["sessionToken"] as? Data ?? Data()
+        previousSessionToken = rawValue["previousSessionToken"] as? Data ?? Data()
         patchId = rawValue["patchId"] as? Data ?? Data()
         patchActivatedAt = rawValue["patchActivatedAt"] as? Date ?? Date.distantPast
         patchExpiresAt = rawValue["patchExpiresAt"] as? Date
@@ -41,7 +42,7 @@ public class MedtrumPumpState: RawRepresentable {
         battery = rawValue["battery"] as? Double ?? 0
         basalStateSince = rawValue["basalStateSince"] as? Date ?? Date.distantPast
         expirationTimer = rawValue["expirationTimer"] as? UInt8 ?? 1
-        notificationAfterActivation =  rawValue["notificationAfterActivation"] as? TimeInterval ?? .hours(70)
+        notificationAfterActivation =  rawValue["notificationAfterActivation"] as? TimeInterval ?? .hours(72)
         
         if let rawInsulinType = rawValue["insulinType"] as? InsulinType.RawValue {
             insulinType = InsulinType(rawValue: rawInsulinType)
@@ -84,6 +85,7 @@ public class MedtrumPumpState: RawRepresentable {
         pumpSN = Data()
         usingContinuousMode = false
         sessionToken = Data()
+        previousSessionToken = Data()
         patchId = Data()
         patchActivatedAt = Date.distantPast
         patchExpiresAt = nil
@@ -120,6 +122,7 @@ public class MedtrumPumpState: RawRepresentable {
         value["pumpSN"] = pumpSN
         value["usingContinuousMode"] = usingContinuousMode
         value["sessionToken"] = sessionToken
+        value["previousSessionToken"] = previousSessionToken
         value["patchId"] = patchId
         value["patchActivatedAt"] = patchActivatedAt
         value["patchExpiresAt"] = patchExpiresAt
@@ -150,6 +153,7 @@ public class MedtrumPumpState: RawRepresentable {
     public var usingContinuousMode = false
     
     public var sessionToken: Data
+    public var previousSessionToken: Data
     public var patchId: Data
     public var patchActivatedAt: Date
     public var patchExpiresAt: Date?
@@ -173,6 +177,7 @@ public class MedtrumPumpState: RawRepresentable {
     
     // **** THESE VALUES SHOULD NOT BE PERSISTED ****
     public var primeProgress: UInt8 = 0
+    public var isConnected: Bool = false
     // **** END ****
     
     public var bolusState: BolusState
